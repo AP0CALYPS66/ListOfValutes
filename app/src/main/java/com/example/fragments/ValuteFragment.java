@@ -100,7 +100,7 @@ public class ValuteFragment extends Fragment {
                             URL urlbit = new URL("https:" + jsonflags.getJSONObject(j).getString("flag_url"));
                             HttpsURLConnection connection = (HttpsURLConnection) urlbit.openConnection();
                             connection.setReadTimeout(1500);
-//                            connection.setConnectTimeout(1500);
+                            connection.setConnectTimeout(15000);
                             connection.connect();
 
                             int reasponceCode = connection.getResponseCode();
@@ -111,10 +111,10 @@ public class ValuteFragment extends Fragment {
                             }
                         }
                     }
-
-
-
-                    valutes.add(new Valute(jsonValute.getString("Value"), jsonValute.getString("Name"), bitmap));
+                    double nominal = Double.parseDouble( jsonValute.getString("Nominal"));
+                    double value = Double.parseDouble( jsonValute.getString("Value"));
+                    String rate = String.valueOf(value / nominal);
+                    valutes.add(new Valute(rate, jsonValute.getString("Name"), bitmap));
                 }
             } catch (IOException | JSONException e) {
                 throw new RuntimeException(e);
