@@ -1,5 +1,6 @@
 package com.example.fragments;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class ValuteFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+    @SuppressLint("HandlerLeak")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,26 +70,26 @@ public class ValuteFragment extends Fragment {
         @Override
         public void run() {
             super.run();
-            String infoResult = "";
+            StringBuilder infoResult = new StringBuilder();
             ArrayList<Valute> valutes = new ArrayList<>();
-            String flags = "";
+            StringBuilder flags = new StringBuilder();
             Bitmap bitmap = null;
             try {
                 URL info = new URL("https://www.cbr-xml-daily.ru/daily_json.js");
                 URL picture = new URL("https://gist.githubusercontent.com/sanchezzzhak/8606e9607396fb5f8216/raw/8a7209a4c1f4728314ef4208abc78be6e9fd5a2f/ISO3166_RU.json");
                 Scanner scanner = new Scanner(info.openStream());
                 while (scanner.hasNext()){
-                    infoResult += scanner.nextLine();
+                    infoResult.append(scanner.nextLine());
                 }
                 scanner.close();
                 Scanner scanner1 = new Scanner(picture.openStream());
                 while (scanner1.hasNext()){
-                    flags += scanner1.nextLine();
+                    flags.append(scanner1.nextLine());
                 }
                 scanner1.close();
 
-                JSONObject json = new JSONObject(infoResult).getJSONObject("Valute");
-                JSONArray jsonflags = new JSONArray(flags);
+                JSONObject json = new JSONObject(infoResult.toString()).getJSONObject("Valute");
+                JSONArray jsonflags = new JSONArray(flags.toString());
 
                 for (int i = 0; i < json.names().length(); i++){
 
