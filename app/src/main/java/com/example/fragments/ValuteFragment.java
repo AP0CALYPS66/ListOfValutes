@@ -113,7 +113,7 @@ public class ValuteFragment extends Fragment {
                     }
                     double nominal = Double.parseDouble( jsonValute.getString("Nominal"));
                     double value = Double.parseDouble( jsonValute.getString("Value"));
-                    String rate = String.valueOf(value / nominal);
+                    String rate = String.format("%.6f",value / nominal );
                     valutes.add(new Valute(rate, jsonValute.getString("Name"), bitmap));
                 }
             } catch (IOException | JSONException e) {
